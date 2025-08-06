@@ -12,6 +12,9 @@ const requisitionRoutes = require('./routes/requisitions');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Configurar trust proxy para funcionar com Nginx
+app.set('trust proxy', 1);
+
 // Configuração de rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
@@ -24,7 +27,7 @@ app.use(helmet());
 app.use(limiter);
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://seu-dominio.com'] 
+    ? ['https://insumos.escolamega.com.br'] 
     : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003'],
   credentials: true
 }));
