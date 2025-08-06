@@ -16,7 +16,7 @@ const Material = sequelize.define('Material', {
     }
   },
   unidadeDeMedida: {
-    type: DataTypes.ENUM('unidade', 'kg', 'g', 'l', 'ml', 'm', 'cm', 'caixa', 'pacote', 'rolo', 'folha'),
+    type: DataTypes.ENUM('unidade', 'kg', 'g', 'l', 'ml', 'm', 'cm', 'caixa', 'pacote', 'rolo', 'folha', 'litro', 'quilo', 'metro', 'resma', 'fardo'),
     allowNull: false
   },
   quantidade: {
