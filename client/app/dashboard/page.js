@@ -92,14 +92,12 @@ export default function DashboardPage() {
       baseItems.push(
         { name: 'Usuários', href: '/usuarios', icon: User },
         { name: 'Produtos', href: '/produtos', icon: Package },
-        { name: 'Materiais', href: '/materiais', icon: Package },
         { name: 'Requisições', href: '/requisicoes', icon: FileText },
         { name: 'Configurações', href: '/configuracoes', icon: Settings },
       );
     } else if (user?.perfil === 'almoxarife') {
       baseItems.push(
         { name: 'Produtos', href: '/produtos', icon: Package },
-        { name: 'Materiais', href: '/materiais', icon: Package },
         { name: 'Requisições', href: '/requisicoes', icon: FileText },
       );
     } else if (user?.perfil === 'coordenador') {
@@ -168,13 +166,6 @@ export default function DashboardPage() {
           description: 'Cadastrar e controlar produtos',
           icon: Package,
           href: '/produtos',
-          color: 'bg-success-500',
-        },
-        {
-          title: 'Adicionar Material',
-          description: 'Cadastrar novo material',
-          icon: Package,
-          href: '/materiais/novo',
           color: 'bg-success-500',
         },
         {
