@@ -33,21 +33,27 @@ export default function DashboardPage() {
   useEffect(() => {
     const loadUser = async () => {
       try {
+        console.log('🔍 Carregando usuário...');
         const userData = getUser();
+        console.log('📋 Dados do usuário:', userData);
+        
         if (!userData) {
+          console.log('❌ Usuário não encontrado, redirecionando para login');
           router.push('/login');
           return;
         }
 
+        console.log('✅ Usuário carregado:', userData.nome);
         setUser(userData);
         
         // Carregar estatísticas baseadas no perfil
         await loadStats(userData.perfil);
       } catch (error) {
-        console.error('Erro ao carregar usuário:', error);
+        console.error('❌ Erro ao carregar usuário:', error);
         toast.error('Erro ao carregar dados do usuário');
         router.push('/login');
       } finally {
+        console.log('🏁 Finalizando carregamento');
         setIsLoading(false);
       }
     };
@@ -57,6 +63,7 @@ export default function DashboardPage() {
 
   const loadStats = async (perfil) => {
     try {
+      console.log('📊 Carregando estatísticas para perfil:', perfil);
       // Aqui você pode carregar estatísticas específicas do perfil
       // Por enquanto, vamos usar dados mockados
       const mockStats = {
@@ -65,9 +72,11 @@ export default function DashboardPage() {
         almoxarife: { materiais: 45, requisicoes: 25, pendentes: 8 },
       };
       
-      setStats(mockStats[perfil] || { materiais: 0, requisicoes: 0, pendentes: 0 });
+      const statsData = mockStats[perfil] || { materiais: 0, requisicoes: 0, pendentes: 0 };
+      console.log('📈 Estatísticas carregadas:', statsData);
+      setStats(statsData);
     } catch (error) {
-      console.error('Erro ao carregar estatísticas:', error);
+      console.error('❌ Erro ao carregar estatísticas:', error);
     }
   };
 
