@@ -14,10 +14,16 @@ const nextConfig = {
     ];
   },
   async rewrites() {
+    // Detectar ambiente para definir a URL do backend
+    const isProduction = process.env.NODE_ENV === 'production';
+    const backendUrl = isProduction 
+      ? 'https://insumos.escolamega.com.br/api/:path*'
+      : 'http://localhost:3001/api/:path*';
+    
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3001/api/:path*',
+        destination: backendUrl,
       },
     ];
   },

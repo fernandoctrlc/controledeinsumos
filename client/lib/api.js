@@ -1,6 +1,22 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+// Detectar automaticamente o ambiente e definir a URL da API
+const getApiBaseUrl = () => {
+  // Se a variável de ambiente estiver definida, usar ela
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  
+  // Se estiver em produção (não localhost), usar o domínio
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    return `https://${window.location.hostname}/api`;
+  }
+  
+  // Em desenvolvimento, usar localhost
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Criar instância do axios
 const api = axios.create({
