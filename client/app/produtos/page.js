@@ -182,7 +182,7 @@ export default function ProdutosPage() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Unidade:</span>
-                    <span className="font-medium">{produto.unidade}</span>
+                    <span className="font-medium">{produto.unidadeDeMedida}</span>
                   </div>
                 </div>
 

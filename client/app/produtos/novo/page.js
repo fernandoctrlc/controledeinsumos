@@ -42,6 +42,7 @@ export default function NovoProdutoPage() {
     try {
       await materialsAPI.criar({
         ...data,
+        unidadeDeMedida: data.unidade, // Mapear unidade para unidadeDeMedida
         quantidade: parseInt(data.quantidade),
         quantidadeMinima: parseInt(data.quantidadeMinima),
         ativo: true
