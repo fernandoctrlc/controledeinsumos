@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ArrowLeft, TrendingUp, TrendingDown, Save, Package } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { materialsAPI, getUser } from '@/lib/api';
+import { materialsAPI, movimentacoesAPI, getUser } from '@/lib/api';
 
 export default function ControleEstoquePage() {
   const [produto, setProduto] = useState(null);
@@ -59,11 +59,22 @@ export default function ControleEstoquePage() {
     
     try {
       const quantidade = parseInt(data.quantidade);
+      const motivo = data.motivo;
+      const observacoes = data.observacoes;
       
       if (tipoOperacao === 'saida' && quantidade > produto.quantidade) {
         toast.error('Quantidade insuficiente em estoque');
         return;
       }
+
+      // Criar movimentação no histórico
+      await movimentacoesAPI.criar({
+        materialId: produto.id,
+        tipo: tipoOperacao,
+        quantidade: quantidade,
+        motivo: motivo,
+        observacoes: observacoes
+      });
 
       if (tipoOperacao === 'entrada') {
         await materialsAPI.adicionarEstoque(produto.id, quantidade);

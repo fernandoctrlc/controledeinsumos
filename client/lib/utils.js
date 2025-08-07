@@ -36,9 +36,12 @@ export function formatDateTime(date) {
 export function formatQuantity(quantity, unit) {
   if (quantity === null || quantity === undefined) return '-';
   
-  const formattedQuantity = parseFloat(quantity).toLocaleString('pt-BR', {
+  // Converter para número e remover casas decimais desnecessárias
+  const numQuantity = parseInt(quantity);
+  
+  const formattedQuantity = numQuantity.toLocaleString('pt-BR', {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0,
   });
   
   return `${formattedQuantity} ${unit || ''}`.trim();

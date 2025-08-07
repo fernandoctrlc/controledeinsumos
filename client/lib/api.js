@@ -128,6 +128,29 @@ export const materialsAPI = {
   },
 };
 
+// Funções de movimentações
+export const movimentacoesAPI = {
+  listar: async (params = {}) => {
+    const response = await api.get('/movimentacoes', { params });
+    return response.data;
+  },
+
+  historicoMaterial: async (materialId, params = {}) => {
+    const response = await api.get(`/movimentacoes/material/${materialId}`, { params });
+    return response.data;
+  },
+
+  criar: async (movimentacaoData) => {
+    const response = await api.post('/movimentacoes', movimentacaoData);
+    return response.data;
+  },
+
+  estatisticas: async (params = {}) => {
+    const response = await api.get('/movimentacoes/estatisticas', { params });
+    return response.data;
+  },
+};
+
 // Funções de requisições
 export const requisitionsAPI = {
   listar: async (params = {}) => {

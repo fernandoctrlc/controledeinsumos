@@ -58,20 +58,40 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-  // Configuração para servir arquivos estáticos
-  async redirects() {
-    return [
+  // Configuração para copiar arquivos estáticos
+  async rewrites() {
+    const rewrites = [
       {
-        source: '/sw.js',
-        destination: '/_next/static/sw.js',
-        permanent: false,
-      },
-      {
-        source: '/manifest.json',
-        destination: '/_next/static/manifest.json',
-        permanent: false,
+        source: '/api/:path*',
+        destination: process.env.NODE_ENV === 'production' 
+          ? 'https://insumos.escolamega.com.br/api/:path*'
+          : 'http://localhost:3001/api/:path*',
       },
     ];
+
+    // Adicionar rewrites para arquivos estáticos em produção
+    if (process.env.NODE_ENV === 'production') {
+      rewrites.push(
+        {
+          source: '/sw.js',
+          destination: '/_next/static/sw.js',
+        },
+        {
+          source: '/manifest.json',
+          destination: '/_next/static/manifest.json',
+        },
+        {
+          source: '/icons/:path*',
+          destination: '/_next/static/icons/:path*',
+        },
+        {
+          source: '/favicon.ico',
+          destination: '/_next/static/favicon.ico',
+        }
+      );
+    }
+
+    return rewrites;
   },
 };
 

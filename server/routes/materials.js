@@ -24,7 +24,7 @@ router.get('/estoque/baixo', auth, async (req, res) => {
 
     // Filtrar materiais com estoque baixo
     const materiaisEstoqueBaixo = materiais.filter(material => 
-      parseFloat(material.quantidade) <= parseFloat(material.quantidadeMinima)
+      parseInt(material.quantidade) <= parseInt(material.quantidadeMinima)
     );
 
     res.json({ materiais: materiaisEstoqueBaixo });
@@ -183,8 +183,8 @@ router.post('/', auth, almoxarife, async (req, res) => {
     const material = await Material.create({
       nome,
       unidadeDeMedida,
-      quantidade: parseFloat(quantidade) || 0,
-      quantidadeMinima: parseFloat(quantidadeMinima) || 0,
+      quantidade: parseInt(quantidade) || 0,
+      quantidadeMinima: parseInt(quantidadeMinima) || 0,
       descricao,
       categoria,
       criadoPor: req.user.id
@@ -245,8 +245,8 @@ router.put('/:id', auth, almoxarife, async (req, res) => {
     // Atualizar campos
     if (nome) material.nome = nome;
     if (unidadeDeMedida) material.unidadeDeMedida = unidadeDeMedida;
-    if (quantidade !== undefined) material.quantidade = parseFloat(quantidade);
-    if (quantidadeMinima !== undefined) material.quantidadeMinima = parseFloat(quantidadeMinima);
+    if (quantidade !== undefined) material.quantidade = parseInt(quantidade);
+    if (quantidadeMinima !== undefined) material.quantidadeMinima = parseInt(quantidadeMinima);
     if (descricao !== undefined) material.descricao = descricao;
     if (categoria !== undefined) material.categoria = categoria;
 
@@ -335,7 +335,7 @@ router.post('/:id/adicionar-estoque', auth, almoxarife, async (req, res) => {
       });
     }
 
-    await material.adicionarEstoque(parseFloat(quantidade));
+    await material.adicionarEstoque(parseInt(quantidade));
 
     res.json({
       message: 'Estoque atualizado com sucesso',

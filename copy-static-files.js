@@ -49,7 +49,26 @@ function copyStaticFiles() {
     });
   }
 
+  // Copiar pasta screenshots (se existir)
+  const screenshotsSourceDir = path.join(publicDir, 'screenshots');
+  const screenshotsDestDir = path.join(nextStaticDir, 'screenshots');
+
+  if (fs.existsSync(screenshotsSourceDir)) {
+    if (!fs.existsSync(screenshotsDestDir)) {
+      fs.mkdirSync(screenshotsDestDir, { recursive: true });
+    }
+
+    const screenshotFiles = fs.readdirSync(screenshotsSourceDir);
+    screenshotFiles.forEach(file => {
+      const sourcePath = path.join(screenshotsSourceDir, file);
+      const destPath = path.join(screenshotsDestDir, file);
+      fs.copyFileSync(sourcePath, destPath);
+      console.log(`✅ Copiado screenshot: ${file}`);
+    });
+  }
+
   console.log('🎉 Arquivos estáticos copiados com sucesso!');
+  console.log('📁 Pasta de destino:', nextStaticDir);
 }
 
 // Executar se o arquivo for executado diretamente

@@ -26,7 +26,7 @@ const Requisicao = sequelize.define('Requisicao', {
     }
   },
   quantidade: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
       min: 1
@@ -54,6 +54,7 @@ const Requisicao = sequelize.define('Requisicao', {
   aprovadoPor: {
     type: DataTypes.INTEGER,
     allowNull: true,
+    field: 'aprovado_por',
     references: {
       model: User,
       key: 'id'
@@ -61,11 +62,13 @@ const Requisicao = sequelize.define('Requisicao', {
   },
   dataAprovacao: {
     type: DataTypes.DATE,
-    allowNull: true
+    allowNull: true,
+    field: 'data_aprovacao'
   },
   motivoRejeicao: {
     type: DataTypes.TEXT,
     allowNull: true,
+    field: 'motivo_rejeicao',
     validate: {
       len: [0, 500]
     }
@@ -77,7 +80,8 @@ const Requisicao = sequelize.define('Requisicao', {
   },
   dataNecessidade: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: false,
+    field: 'data_necessidade'
   }
 }, {
   tableName: 'requisitions'
@@ -85,8 +89,8 @@ const Requisicao = sequelize.define('Requisicao', {
 
 // Relacionamentos
 Requisicao.belongsTo(User, { as: 'solicitanteUser', foreignKey: 'solicitante' });
-Requisicao.belongsTo(User, { as: 'aprovadoPorUser', foreignKey: 'aprovadoPor' });
 Requisicao.belongsTo(Material, { as: 'materialObj', foreignKey: 'material' });
+Requisicao.belongsTo(User, { as: 'aprovadoPorUser', foreignKey: 'aprovadoPor' });
 
 // Hooks
 Requisicao.addHook('beforeSave', (requisicao) => {

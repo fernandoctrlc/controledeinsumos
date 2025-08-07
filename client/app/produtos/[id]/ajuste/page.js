@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ArrowLeft, TrendingDown, Save, Package, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { materialsAPI, getUser } from '@/lib/api';
+import { materialsAPI, movimentacoesAPI, getUser } from '@/lib/api';
 
 export default function AjusteProdutoPage() {
   const [produto, setProduto] = useState(null);
@@ -62,6 +62,7 @@ export default function AjusteProdutoPage() {
     try {
       const quantidade = parseInt(data.quantidade);
       const motivo = data.motivo;
+      const observacoes = data.observacoes;
       
       // Validar quantidade para saída
       if (tipoOperacao === 'saida' && quantidade > produto.quantidade) {
@@ -76,6 +77,15 @@ export default function AjusteProdutoPage() {
       } else {
         novaQuantidade = produto.quantidade - quantidade;
       }
+
+      // Criar movimentação no histórico
+      await movimentacoesAPI.criar({
+        materialId: produto.id,
+        tipo: 'ajuste',
+        quantidade: quantidade,
+        motivo: motivo,
+        observacoes: observacoes
+      });
 
       // Atualizar produto
       await materialsAPI.atualizar(produto.id, {

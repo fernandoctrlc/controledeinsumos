@@ -17,10 +17,11 @@ const Material = sequelize.define('Material', {
   },
   unidadeDeMedida: {
     type: DataTypes.ENUM('unidade', 'kg', 'g', 'l', 'ml', 'm', 'cm', 'caixa', 'pacote', 'rolo', 'folha', 'litro', 'quilo', 'metro', 'resma', 'fardo'),
-    allowNull: false
+    allowNull: false,
+    field: 'unidade_de_medida'
   },
   quantidade: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
     validate: {
@@ -28,12 +29,13 @@ const Material = sequelize.define('Material', {
     }
   },
   quantidadeMinima: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
     validate: {
       min: 0
-    }
+    },
+    field: 'quantidade_minima'
   },
   descricao: {
     type: DataTypes.TEXT,
@@ -56,6 +58,7 @@ const Material = sequelize.define('Material', {
   criadoPor: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    field: 'criado_por',
     references: {
       model: User,
       key: 'id'
@@ -70,18 +73,18 @@ Material.belongsTo(User, { as: 'criadoPorUser', foreignKey: 'criadoPor' });
 
 // Método para verificar se está em estoque baixo
 Material.prototype.estoqueBaixo = function() {
-  return parseFloat(this.quantidade) <= parseFloat(this.quantidadeMinima);
+  return parseInt(this.quantidade) <= parseInt(this.quantidadeMinima);
 };
 
 // Método para adicionar quantidade ao estoque
 Material.prototype.adicionarEstoque = async function(quantidade) {
-  this.quantidade = parseFloat(this.quantidade) + parseFloat(quantidade);
+  this.quantidade = parseInt(this.quantidade) + parseInt(quantidade);
   return await this.save();
 };
 
 // Método para remover quantidade do estoque
 Material.prototype.removerEstoque = async function(quantidade) {
-  const novaQuantidade = parseFloat(this.quantidade) - parseFloat(quantidade);
+  const novaQuantidade = parseInt(this.quantidade) - parseInt(quantidade);
   if (novaQuantidade < 0) {
     throw new Error('Quantidade insuficiente em estoque');
   }
