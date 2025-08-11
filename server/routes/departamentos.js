@@ -39,7 +39,7 @@ router.get('/', auth, async (req, res) => {
       include: [
         { 
           model: User, 
-          as: 'criadoPorUser', 
+          as: 'criadoPorDepartamento', 
           attributes: ['nome'] 
         }
       ],
@@ -92,7 +92,7 @@ router.get('/:id', auth, async (req, res) => {
       include: [
         { 
           model: User, 
-          as: 'criadoPorUser', 
+          as: 'criadoPorDepartamento', 
           attributes: ['nome', 'email'] 
         }
       ]
@@ -170,7 +170,7 @@ router.post('/', auth, coordenador, async (req, res) => {
       include: [
         { 
           model: User, 
-          as: 'criadoPorUser', 
+          as: 'criadoPorDepartamento', 
           attributes: ['nome'] 
         }
       ]
@@ -267,7 +267,7 @@ router.put('/:id', auth, coordenador, async (req, res) => {
       include: [
         { 
           model: User, 
-          as: 'criadoPorUser', 
+          as: 'criadoPorDepartamento', 
           attributes: ['nome'] 
         }
       ]
