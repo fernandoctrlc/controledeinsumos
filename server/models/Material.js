@@ -68,8 +68,7 @@ const Material = sequelize.define('Material', {
   tableName: 'materials'
 });
 
-// Relacionamento com User
-Material.belongsTo(User, { as: 'criadoPorUser', foreignKey: 'criadoPor' });
+// Relacionamento com User - Definido em associations.js
 
 // Método para verificar se está em estoque baixo
 Material.prototype.estoqueBaixo = function() {

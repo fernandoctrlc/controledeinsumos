@@ -95,11 +95,7 @@ const Requisicao = sequelize.define('Requisicao', {
   tableName: 'requisitions'
 });
 
-// Relacionamentos
-Requisicao.belongsTo(User, { as: 'solicitanteUser', foreignKey: 'solicitante' });
-Requisicao.belongsTo(Material, { as: 'materialObj', foreignKey: 'material' });
-Requisicao.belongsTo(User, { as: 'aprovadoPorUser', foreignKey: 'aprovadoPor' });
-Requisicao.belongsTo(require('./Departamento'), { as: 'departamentoObj', foreignKey: 'departamento' });
+// Relacionamentos - Definidos em associations.js
 
 // Hooks
 Requisicao.addHook('beforeSave', (requisicao) => {
