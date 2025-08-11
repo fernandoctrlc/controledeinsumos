@@ -82,6 +82,14 @@ const Requisicao = sequelize.define('Requisicao', {
     type: DataTypes.DATE,
     allowNull: false,
     field: 'data_necessidade'
+  },
+  departamento: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'departamentos',
+      key: 'id'
+    }
   }
 }, {
   tableName: 'requisitions'
@@ -91,6 +99,7 @@ const Requisicao = sequelize.define('Requisicao', {
 Requisicao.belongsTo(User, { as: 'solicitanteUser', foreignKey: 'solicitante' });
 Requisicao.belongsTo(Material, { as: 'materialObj', foreignKey: 'material' });
 Requisicao.belongsTo(User, { as: 'aprovadoPorUser', foreignKey: 'aprovadoPor' });
+Requisicao.belongsTo(require('./Departamento'), { as: 'departamentoObj', foreignKey: 'departamento' });
 
 // Hooks
 Requisicao.addHook('beforeSave', (requisicao) => {

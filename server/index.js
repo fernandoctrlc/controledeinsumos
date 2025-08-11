@@ -11,6 +11,9 @@ const requisitionRoutes = require('./routes/requisitions');
 const movimentacaoRoutes = require('./routes/movimentacoes');
 const departamentoRoutes = require('./routes/departamentos');
 
+// Carregar associações dos modelos
+require('./models/associations');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 

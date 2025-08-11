@@ -240,7 +240,8 @@ router.post('/', auth, professorOuCoordenador, async (req, res) => {
       justificativa, 
       observacoes, 
       prioridade = 'media',
-      dataNecessidade 
+      dataNecessidade,
+      departamento 
     } = req.body;
 
     // Validações básicas
@@ -273,7 +274,8 @@ router.post('/', auth, professorOuCoordenador, async (req, res) => {
       justificativa,
       observacoes,
       prioridade,
-      dataNecessidade: new Date(dataNecessidade)
+      dataNecessidade: new Date(dataNecessidade),
+      departamento: departamento || null
     });
 
     // Popular dados para retorno
@@ -465,7 +467,8 @@ router.put('/:id', auth, professorOuCoordenador, async (req, res) => {
       justificativa, 
       observacoes, 
       prioridade,
-      dataNecessidade 
+      dataNecessidade,
+      departamento 
     } = req.body;
 
     const requisicao = await Requisicao.findByPk(req.params.id);
@@ -523,7 +526,8 @@ router.put('/:id', auth, professorOuCoordenador, async (req, res) => {
       justificativa,
       observacoes,
       prioridade,
-      dataNecessidade: new Date(dataNecessidade)
+      dataNecessidade: new Date(dataNecessidade),
+      departamento: departamento || null
     });
 
     // Popular dados para retorno
