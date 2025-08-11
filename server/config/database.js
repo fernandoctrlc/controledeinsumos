@@ -37,8 +37,9 @@ const testConnection = async () => {
 // Função para sincronizar os modelos
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true });
-    console.log('✅ Banco de dados sincronizado');
+    // Desabilitar sincronização automática para evitar problemas de índices
+    // await sequelize.sync({ alter: true });
+    console.log('✅ Sincronização automática desabilitada - use scripts de migração');
   } catch (error) {
     console.error('❌ Erro ao sincronizar banco de dados:', error);
   }
