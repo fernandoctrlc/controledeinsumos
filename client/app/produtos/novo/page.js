@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowLeft, Save, Package } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { materialsAPI, getUser } from '@/lib/api';
+import BackToDashboard from '@/components/BackToDashboard';
 
 export default function NovoProdutoPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -66,12 +67,7 @@ export default function NovoProdutoPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <button
-                onClick={() => router.back()}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md mr-4"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
+              <BackToDashboard className="mr-4" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Novo Produto</h1>
                 <p className="text-gray-600">Cadastre um novo produto no sistema</p>

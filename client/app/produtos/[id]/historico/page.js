@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Package, TrendingUp, TrendingDown, AlertTriangle, Calendar, User } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { materialsAPI, movimentacoesAPI, getUser } from '@/lib/api';
+import BackToDashboard from '@/components/BackToDashboard';
 
 export default function HistoricoProdutoPage() {
   const [produto, setProduto] = useState(null);
@@ -142,14 +143,9 @@ export default function HistoricoProdutoPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <button
-                onClick={() => router.back()}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md mr-4"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
+              <BackToDashboard className="mr-4" />
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Histórico de Movimentações</h1>
+                <h1 className="text-2xl font-bold text-gray-500">Histórico de Movimentações</h1>
                 <p className="text-gray-600">Histórico completo do produto: {produto.nome}</p>
               </div>
             </div>

@@ -17,6 +17,7 @@ import {
 import toast from 'react-hot-toast';
 import { getUser, clearAuthData, authAPI, requisitionsAPI } from '@/lib/api';
 import { getProfileLabel } from '@/lib/utils';
+import BackToDashboard from '@/components/BackToDashboard';
 
 export default function RequisicoesPage() {
   const [user, setUser] = useState(null);
@@ -117,12 +118,7 @@ export default function RequisicoesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 mr-2"
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </button>
+              <BackToDashboard className="mr-3" />
               <h1 className="text-xl font-semibold text-gray-900">Requisições</h1>
             </div>
 

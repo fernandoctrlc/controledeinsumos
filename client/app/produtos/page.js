@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { materialsAPI, getUser } from '@/lib/api';
+import BackToDashboard from '@/components/BackToDashboard';
 
 export default function ProdutosPage() {
   const [produtos, setProdutos] = useState([]);
@@ -105,13 +106,16 @@ export default function ProdutosPage() {
               <h1 className="text-2xl font-bold text-gray-900">Produtos</h1>
               <p className="text-gray-600">Gerencie o cadastro de produtos e controle de estoque</p>
             </div>
-            <button
-              onClick={() => router.push('/produtos/novo')}
-              className="btn btn-primary flex items-center"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Novo Produto
-            </button>
+            <div className="flex items-center space-x-3">
+              <BackToDashboard />
+              <button
+                onClick={() => router.push('/produtos/novo')}
+                className="btn btn-primary flex items-center"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Novo Produto
+              </button>
+            </div>
           </div>
         </div>
 

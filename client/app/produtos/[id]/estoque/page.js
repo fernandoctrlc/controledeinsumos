@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowLeft, TrendingUp, TrendingDown, Save, Package } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { materialsAPI, movimentacoesAPI, getUser } from '@/lib/api';
+import BackToDashboard from '@/components/BackToDashboard';
 
 export default function ControleEstoquePage() {
   const [produto, setProduto] = useState(null);
@@ -121,12 +122,7 @@ export default function ControleEstoquePage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <button
-                onClick={() => router.back()}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md mr-4"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
+              <BackToDashboard className="mr-4" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Controle de Estoque</h1>
                 <p className="text-gray-600">Gerencie o estoque do produto</p>

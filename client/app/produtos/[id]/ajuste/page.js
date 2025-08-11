@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { ArrowLeft, TrendingDown, Save, Package, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { materialsAPI, movimentacoesAPI, getUser } from '@/lib/api';
+import BackToDashboard from '@/components/BackToDashboard';
 
 export default function AjusteProdutoPage() {
   const [produto, setProduto] = useState(null);
@@ -140,12 +141,7 @@ export default function AjusteProdutoPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <button
-                onClick={() => router.back()}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md mr-4"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
+              <BackToDashboard className="mr-4" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Ajuste de Estoque</h1>
                 <p className="text-gray-600">Ajustar quantidade do produto: {produto.nome}</p>

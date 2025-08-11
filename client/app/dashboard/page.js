@@ -13,22 +13,23 @@ import {
   Plus,
   Search,
   Bell,
-  Settings
+  Settings,
+  RefreshCw,
+  AlertTriangle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getUser, clearAuthData, authAPI } from '@/lib/api';
 import { getProfileLabel } from '@/lib/utils';
+import { useDashboardStats } from '@/hooks/useDashboardStats';
 
 export default function DashboardPage() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [stats, setStats] = useState({
-    materiais: 0,
-    requisicoes: 0,
-    pendentes: 0,
-  });
   const router = useRouter();
+
+  // Usar o hook personalizado para estatísticas
+  const { stats, isLoading: statsLoading, error: statsError, refreshStats } = useDashboardStats(user);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -45,9 +46,6 @@ export default function DashboardPage() {
 
         console.log('✅ Usuário carregado:', userData.nome);
         setUser(userData);
-        
-        // Carregar estatísticas baseadas no perfil
-        await loadStats(userData.perfil);
       } catch (error) {
         console.error('❌ Erro ao carregar usuário:', error);
         toast.error('Erro ao carregar dados do usuário');
@@ -61,25 +59,6 @@ export default function DashboardPage() {
     loadUser();
   }, [router]);
 
-  const loadStats = async (perfil) => {
-    try {
-      console.log('📊 Carregando estatísticas para perfil:', perfil);
-      // Aqui você pode carregar estatísticas específicas do perfil
-      // Por enquanto, vamos usar dados mockados
-      const mockStats = {
-        professor: { materiais: 45, requisicoes: 12, pendentes: 3 },
-        coordenador: { materiais: 45, requisicoes: 25, pendentes: 8 },
-        almoxarife: { materiais: 45, requisicoes: 25, pendentes: 8 },
-      };
-      
-      const statsData = mockStats[perfil] || { materiais: 0, requisicoes: 0, pendentes: 0 };
-      console.log('📈 Estatísticas carregadas:', statsData);
-      setStats(statsData);
-    } catch (error) {
-      console.error('❌ Erro ao carregar estatísticas:', error);
-    }
-  };
-
   const handleLogout = async () => {
     try {
       await authAPI.logout();
@@ -90,6 +69,11 @@ export default function DashboardPage() {
       router.push('/login');
       toast.success('Logout realizado com sucesso');
     }
+  };
+
+  const handleRefreshStats = () => {
+    refreshStats();
+    toast.success('Estatísticas atualizadas!');
   };
 
   const getMenuItems = () => {
@@ -345,8 +329,21 @@ export default function DashboardPage() {
               </p>
             </div>
 
+            {/* Stats Header */}
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Estatísticas do Sistema</h3>
+              <button
+                onClick={handleRefreshStats}
+                disabled={statsLoading}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${statsLoading ? 'animate-spin' : ''}`} />
+                {statsLoading ? 'Atualizando...' : 'Atualizar'}
+              </button>
+            </div>
+
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="card">
                 <div className="card-body">
                   <div className="flex items-center">
@@ -355,7 +352,9 @@ export default function DashboardPage() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm font-medium text-gray-500">Total de Materiais</p>
-                      <p className="text-2xl font-semibold text-gray-900">{stats.materiais}</p>
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {statsLoading ? '...' : stats.materiais}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -368,8 +367,10 @@ export default function DashboardPage() {
                       <FileText className="w-8 h-8 text-warning-500" />
                     </div>
                     <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-500">Requisições</p>
-                      <p className="text-2xl font-semibold text-gray-900">{stats.requisicoes}</p>
+                      <p className="text-sm font-medium text-gray-500">Total Requisições</p>
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {statsLoading ? '...' : stats.requisicoes}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -383,12 +384,50 @@ export default function DashboardPage() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm font-medium text-gray-500">Pendentes</p>
-                      <p className="text-2xl font-semibold text-gray-900">{stats.pendentes}</p>
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {statsLoading ? '...' : stats.pendentes}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-body">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <AlertTriangle className="w-8 h-8 text-yellow-500" />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-500">Estoque Baixo</p>
+                      <p className="text-2xl font-semibold text-gray-900">
+                        {statsLoading ? '...' : stats.estoqueBaixo}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Error Message */}
+            {statsError && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-800">{statsError}</p>
+                    <button
+                      onClick={refreshStats}
+                      className="mt-2 text-sm text-red-600 hover:text-red-500 underline"
+                    >
+                      Tentar novamente
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Quick Actions */}
             <div className="mb-8">
