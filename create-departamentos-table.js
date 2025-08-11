@@ -42,7 +42,7 @@ async function createDepartamentosTable() {
         INDEX idx_ativo (ativo),
         INDEX idx_criadoPor (criadoPor),
         
-        FOREIGN KEY (criadoPor) REFERENCES user(id) ON DELETE RESTRICT
+        FOREIGN KEY (criadoPor) REFERENCES users(id) ON DELETE RESTRICT
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `;
 

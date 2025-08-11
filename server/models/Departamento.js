@@ -53,7 +53,7 @@ const Departamento = sequelize.define('Departamento', {
     type: DataTypes.INTEGER,
     allowNull: false,
           references: {
-        model: 'user',
+        model: 'users',
         key: 'id'
       }
   }
