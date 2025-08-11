@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes, Op } = require('sequelize');
+const { sequelize } = require('../config/database');
 
 const Departamento = sequelize.define('Departamento', {
   id: {
@@ -108,7 +108,7 @@ Departamento.prototype.toJSON = function() {
 Departamento.buscarPorNome = async function(nome) {
   return await this.findOne({
     where: {
-      nome: { [sequelize.Op.iLike]: `%${nome}%` },
+      nome: { [Op.like]: `%${nome}%` },
       ativo: true
     }
   });
@@ -117,7 +117,7 @@ Departamento.buscarPorNome = async function(nome) {
 Departamento.buscarPorSigla = async function(sigla) {
   return await this.findOne({
     where: {
-      sigla: { [sequelize.Op.iLike]: `%${sigla}%` },
+      sigla: { [Op.like]: `%${sigla}%` },
       ativo: true
     }
   });
