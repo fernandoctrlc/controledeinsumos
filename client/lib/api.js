@@ -194,6 +194,39 @@ export const requisitionsAPI = {
   },
 };
 
+// Funções de departamentos
+export const departamentosAPI = {
+  listar: async (params = {}) => {
+    const response = await api.get('/departamentos', { params });
+    return response.data;
+  },
+
+  buscar: async (id) => {
+    const response = await api.get(`/departamentos/${id}`);
+    return response.data;
+  },
+
+  criar: async (departamentoData) => {
+    const response = await api.post('/departamentos', departamentoData);
+    return response.data;
+  },
+
+  atualizar: async (id, departamentoData) => {
+    const response = await api.put(`/departamentos/${id}`, departamentoData);
+    return response.data;
+  },
+
+  deletar: async (id) => {
+    const response = await api.delete(`/departamentos/${id}`);
+    return response.data;
+  },
+
+  ativos: async () => {
+    const response = await api.get('/departamentos/ativos');
+    return response.data;
+  },
+};
+
 // Função para verificar se o usuário está autenticado
 export const isAuthenticated = () => {
   if (typeof window === 'undefined') return false;

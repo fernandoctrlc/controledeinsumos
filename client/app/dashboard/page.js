@@ -15,7 +15,8 @@ import {
   Bell,
   Settings,
   RefreshCw,
-  AlertTriangle
+  AlertTriangle,
+  Building2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getUser, clearAuthData, authAPI } from '@/lib/api';
@@ -98,6 +99,7 @@ export default function DashboardPage() {
         { name: 'Produtos', href: '/produtos', icon: Package },
         { name: 'Nova Requisição', href: '/requisicoes/nova', icon: Plus },
         { name: 'Requisições', href: '/requisicoes', icon: FileText },
+        { name: 'Departamentos', href: '/departamentos', icon: Building2 },
       );
     } else if (user?.perfil === 'professor') {
       baseItems.push(
@@ -187,6 +189,13 @@ export default function DashboardPage() {
           icon: Package,
           href: '/produtos',
           color: 'bg-success-500',
+        },
+        {
+          title: 'Gerenciar Departamentos',
+          description: 'Cadastrar e controlar departamentos',
+          icon: Building2,
+          href: '/departamentos',
+          color: 'bg-indigo-500',
         },
         {
           title: 'Requisições Pendentes',

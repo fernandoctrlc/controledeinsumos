@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const materialRoutes = require('./routes/materials');
 const requisitionRoutes = require('./routes/requisitions');
 const movimentacaoRoutes = require('./routes/movimentacoes');
+const departamentoRoutes = require('./routes/departamentos');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -46,6 +47,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/api/requisitions', requisitionRoutes);
 app.use('/api/movimentacoes', movimentacaoRoutes);
+app.use('/api/departamentos', departamentoRoutes);
 
 // Rota de health check
 app.get('/api/health', (req, res) => {
