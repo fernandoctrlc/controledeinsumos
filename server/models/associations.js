@@ -59,7 +59,7 @@ Requisicao.belongsTo(Departamento, {
 // Associações do Departamento
 Departamento.belongsTo(User, {
   foreignKey: 'criadoPor',
-  as: 'criadoPorUser'
+  as: 'criadoPorDepartamento'
 });
 
 Departamento.hasMany(Requisicao, {
