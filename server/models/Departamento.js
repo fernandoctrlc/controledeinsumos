@@ -52,10 +52,10 @@ const Departamento = sequelize.define('Departamento', {
   criadoPor: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Users',
-      key: 'id'
-    }
+          references: {
+        model: 'user',
+        key: 'id'
+      }
   }
 }, {
   tableName: 'departamentos',
