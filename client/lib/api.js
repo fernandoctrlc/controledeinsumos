@@ -178,6 +178,11 @@ export const requisitionsAPI = {
     return response.data;
   },
 
+  atualizar: async (id, requisicaoData) => {
+    const response = await api.put(`/requisitions/${id}`, requisicaoData);
+    return response.data;
+  },
+
   estatisticas: async () => {
     const response = await api.get('/requisitions/estatisticas');
     return response.data;

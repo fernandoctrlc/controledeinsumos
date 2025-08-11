@@ -3,7 +3,7 @@ const { Op, sequelize } = require('sequelize');
 const Requisicao = require('../models/Requisicao');
 const Material = require('../models/Material');
 const User = require('../models/User');
-const { auth, professor, coordenadorOuAlmoxarife } = require('../middleware/auth');
+const { auth, professor, coordenadorOuAlmoxarife, professorOuCoordenador } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -231,8 +231,8 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// POST /api/requisitions - Criar requisição (apenas professor)
-router.post('/', auth, professor, async (req, res) => {
+// POST /api/requisitions - Criar requisição (professor ou coordenador)
+router.post('/', auth, professorOuCoordenador, async (req, res) => {
   try {
     const { 
       material, 
@@ -450,6 +450,114 @@ router.put('/:id/rejeitar', auth, coordenadorOuAlmoxarife, async (req, res) => {
 
   } catch (error) {
     console.error('Erro ao rejeitar requisição:', error);
+    res.status(500).json({
+      error: 'Erro interno do servidor'
+    });
+  }
+});
+
+// PUT /api/requisitions/:id - Atualizar requisição (professor ou coordenador)
+router.put('/:id', auth, professorOuCoordenador, async (req, res) => {
+  try {
+    const { 
+      material, 
+      quantidade, 
+      justificativa, 
+      observacoes, 
+      prioridade,
+      dataNecessidade 
+    } = req.body;
+
+    const requisicao = await Requisicao.findByPk(req.params.id);
+
+    if (!requisicao) {
+      return res.status(404).json({
+        error: 'Requisição não encontrada'
+      });
+    }
+
+    // Verificar se a requisição pode ser editada
+    if (requisicao.status !== 'pendente') {
+      return res.status(400).json({
+        error: 'Só é possível editar requisições pendentes'
+      });
+    }
+
+    // Professores só podem editar suas próprias requisições
+    if (req.user.perfil === 'professor' && requisicao.solicitante !== req.user.id) {
+      return res.status(403).json({
+        error: 'Você só pode editar suas próprias requisições'
+      });
+    }
+
+    // Coordenadores podem editar qualquer requisição pendente
+    // (não há restrição adicional)
+
+    // Validações básicas
+    if (!material || !quantidade || !justificativa || !dataNecessidade) {
+      return res.status(400).json({
+        error: 'Material, quantidade, justificativa e data de necessidade são obrigatórios'
+      });
+    }
+
+    // Verificar se o material existe e está ativo
+    const materialObj = await Material.findByPk(material);
+    if (!materialObj || !materialObj.ativo) {
+      return res.status(400).json({
+        error: 'Material não encontrado ou inativo'
+      });
+    }
+
+    // Verificar se há estoque suficiente
+    if (materialObj.quantidade < quantidade) {
+      return res.status(400).json({
+        error: 'Quantidade solicitada maior que o estoque disponível',
+        estoqueDisponivel: materialObj.quantidade
+      });
+    }
+
+    // Atualizar requisição
+    await requisicao.update({
+      material,
+      quantidade: parseFloat(quantidade),
+      justificativa,
+      observacoes,
+      prioridade,
+      dataNecessidade: new Date(dataNecessidade)
+    });
+
+    // Popular dados para retorno
+    await requisicao.reload({
+      include: [
+        { 
+          model: User, 
+          as: 'solicitanteUser', 
+          attributes: ['nome', 'email'] 
+        },
+        { 
+          model: Material, 
+          as: 'materialObj', 
+          attributes: ['nome', 'unidadeDeMedida'] 
+        }
+      ]
+    });
+
+    res.json({
+      message: 'Requisição atualizada com sucesso',
+      requisicao
+    });
+
+  } catch (error) {
+    console.error('Erro ao atualizar requisição:', error);
+    
+    if (error.name === 'ValidationError') {
+      const erros = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        error: 'Dados inválidos',
+        detalhes: erros
+      });
+    }
+
     res.status(500).json({
       error: 'Erro interno do servidor'
     });

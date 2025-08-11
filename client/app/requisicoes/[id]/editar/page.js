@@ -73,8 +73,17 @@ export default function EditarRequisicaoPage() {
       const req = response.requisicao;
       
       // Verificar se o usuário pode editar esta requisição
-      if (req.solicitante !== user?.id || req.status !== 'pendente') {
+      // Professores só podem editar suas próprias requisições pendentes
+      // Coordenadores podem editar qualquer requisição pendente
+      if (user?.perfil === 'professor' && (req.solicitante !== user?.id || req.status !== 'pendente')) {
         toast.error('Você não pode editar esta requisição');
+        router.push('/requisicoes');
+        return;
+      }
+      
+      // Coordenadores podem editar qualquer requisição pendente
+      if (user?.perfil === 'coordenador' && req.status !== 'pendente') {
+        toast.error('Só é possível editar requisições pendentes');
         router.push('/requisicoes');
         return;
       }

@@ -96,6 +96,7 @@ export default function DashboardPage() {
     } else if (user?.perfil === 'coordenador') {
       baseItems.push(
         { name: 'Produtos', href: '/produtos', icon: Package },
+        { name: 'Nova Requisição', href: '/requisicoes/nova', icon: Plus },
         { name: 'Requisições', href: '/requisicoes', icon: FileText },
       );
     } else if (user?.perfil === 'professor') {
@@ -173,6 +174,13 @@ export default function DashboardPage() {
 
     if (user?.perfil === 'coordenador') {
       actions.push(
+        {
+          title: 'Nova Requisição',
+          description: 'Solicitar materiais',
+          icon: Plus,
+          href: '/requisicoes/nova',
+          color: 'bg-primary-500',
+        },
         {
           title: 'Gerenciar Produtos',
           description: 'Cadastrar e controlar produtos',

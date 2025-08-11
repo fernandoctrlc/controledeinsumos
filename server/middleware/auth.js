@@ -71,6 +71,7 @@ const professor = verificarPerfil('professor');
 const coordenador = verificarPerfil('coordenador');
 const almoxarife = verificarPerfil('almoxarife');
 const coordenadorOuAlmoxarife = verificarPerfil(['coordenador', 'almoxarife']);
+const professorOuCoordenador = verificarPerfil(['professor', 'coordenador']);
 
 module.exports = {
   auth,
@@ -78,5 +79,6 @@ module.exports = {
   professor,
   coordenador,
   almoxarife,
-  coordenadorOuAlmoxarife
+  coordenadorOuAlmoxarife,
+  professorOuCoordenador
 }; 
